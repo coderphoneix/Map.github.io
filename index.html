@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Indian Map</title>
+  <style>
+    /* CSS styles for the map container */
+    #map {
+      width: 700px;
+      height: 840px;
+      background-color: #f2f2f2;
+      background-image: url(india-map.jpg);
+      position: relative;
+    }
+
+    /* CSS styles for the highlighted place */
+    .highlight {
+      animation: highlightAnimation 2s;
+    }
+
+    /* Keyframe animation for the highlighted place */
+    @keyframes highlightAnimation {
+      0% { background-color: yellow; }
+      50% { background-color: orange; }
+      100% { background-color: yellow; }
+    }
+
+    /* CSS styles for the place name */
+    .place-name {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      font-weight: bold;
+      animation: fadeInAnimation 1s;
+    }
+
+    /* Keyframe animation for the place name */
+    @keyframes fadeInAnimation {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <input type="text" id="search" placeholder="Search for a place">
+  <ul id="places">
+    <li>New Delhi</li>
+    <li>Mumbai</li>
+    <li>Chennai</li>
+    <li>Kolkata</li>
+    <li>Bengaluru</li>
+  </ul>
+
+  <script>
+    // JavaScript code to handle map highlighting and animation
+    const searchInput = document.getElementById('search');
+    const placesList = document.getElementById('places');
+    const map = document.getElementById('map');
+
+    placesList.addEventListener('click', highlightPlace);
+
+    function highlightPlace(event) {
+      const placeName = event.target.innerText;
+      const placeElement = document.createElement('div');
+      placeElement.classList.add('place-name');
+      placeElement.innerText = placeName;
+      map.appendChild(placeElement);
+
+      const highlightedPlace = document.querySelector('.highlight');
+      if (highlightedPlace) {
+        highlightedPlace.classList.remove('highlight');
+      }
+
+      event.target.classList.add('highlight');
+    }
+
+    searchInput.addEventListener('input', filterPlaces);
+
+    function filterPlaces() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const places = Array.from(placesList.getElementsByTagName('li'));
+
+      places.forEach(function(place) {
+        const placeName = place.innerText.toLowerCase();
+        if (placeName.indexOf(searchTerm) > -1) {
+          place.style.display = 'block';
+        } else {
+          place.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
